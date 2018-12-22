@@ -1,0 +1,19 @@
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=Haierweg 32 Heizungsbot Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=pi
+Group=pi
+ExecStart=/home/pi/telegram-heizungsbot/heizungsbot.py
+ExecStartPre=/bin/sleep 10
+WorkingDirectory=/home/pi/telegram-heizungsbot
+Type=simple
+
+[Timer]
+OnStartupSec=25
+
