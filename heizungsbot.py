@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import time
 import random
 import datetime
@@ -56,10 +57,11 @@ def handle(msg):
     command = msg['text']    
     
     if chat_id in allowed_chat_ids:
+        bot.sendMessage(chat_id, 'Temperatur wird gemessen \u23F3')
         temperatures = read_temp()
         print(temperatures)
         for i, temp in enumerate(temperatures):
-            bot.sendMessage(chat_id, 'Temperatur auf ' + temperature_name[i] + ': ' + str(temp) + ' °C', reply_markup=markup)
+            bot.sendMessage(chat_id, '\U0001F321 Temperatur auf ' + temperature_name[i] + ': ' + str(temp) + ' °C', reply_markup=markup)
 #        print(command)
     else:
         print('ignoring message from unauthorized person')
@@ -76,11 +78,10 @@ while True:
     for i, temp in enumerate(temperatures):
         if not warned[i]:
             if temp < threshold_warning_lower[i]:
-                send_message_to_all('Warnung: Temperatur auf ' + temperature_name[i] + ' unter Schwelle von ' + str(threshold_warning_lower[i]) + '°C (' + str(temp) + '°C)')
+                send_message_to_all('Warnung: Temperatur auf ' + temperature_name[i] + ' zu niedrig: ' + str(temp) + ' °C \u2744 \u26C4')
                 warned[i] = True
         elif warned[i]:
             if temp > threshold_warning_upper[i]:
-                send_message_to_all('Temperatur auf ' + temperature_name[i] + ' wieder über Schwelle von ' + str(threshold_warning_lower[i]) + '°C gestiegen! (' + str(temp) + '°C)')
+                send_message_to_all('Temperatur auf ' + temperature_name[i] + ' wieder in Ordnung: ' + str(temp) + ' \U0001F6C0 \U0001F60D')
                 warned[i] = False        
-    time.sleep(1) # sleep 1 second
-
+    time.sleep(60) # sleep 1 minute
