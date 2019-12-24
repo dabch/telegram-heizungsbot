@@ -21,7 +21,7 @@ threshold_warning_lower = [45, 35]                      # threshold to trigger a
 threshold_warning_upper = [46, 36]   # threshold to reset the warning trigger, allowing the next warning to be triggered
 warned = [False] * len(temperature_name)                # current state of warning for each temperature sensor
 
-allowed_chat_ids = [9074693]
+allowed_chat_ids = [9074693, 375680536, 171594433]
 
 
 base_dir = '/sys/bus/w1/devices/'
@@ -68,7 +68,10 @@ def handle(msg):
 
 def send_message_to_all(message):
     for chat_id in allowed_chat_ids:
-        bot.sendMessage(chat_id, message, reply_markup=markup)
+        try:
+            bot.sendMessage(chat_id, message, reply_markup=markup)
+        except telepot.exception.BotWasBlockedError:
+            pass
 
 bot = telepot.Bot(BOT_TOKEN)
 bot.message_loop(handle)
