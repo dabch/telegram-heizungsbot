@@ -13,6 +13,9 @@ ExecStart=/home/pi/telegram-heizungsbot/heizungsbot.py
 ExecStartPre=/bin/sleep 10
 WorkingDirectory=/home/pi/telegram-heizungsbot
 Type=simple
+RemainAfterExit=no
+Restart=on-failure
+RestartSec=5s
 
 [Timer]
 OnStartupSec=25
